@@ -74,6 +74,31 @@ namespace dquinonezS5.Repositories
                 Message = string.Format("Error " + ex.Message);
             }
         }
+
+        public void UpdatePerson(int id, string newName)
+        {
+            int result = 0;
+            try
+            {
+                Init();
+
+                // Validar que el nuevo nombre no esté vacío
+                if (string.IsNullOrEmpty(newName))
+                    throw new Exception("El nuevo nombre es requerido");
+
+                // crear el objeto Persona con el Id existente y el nuevo nombre
+                Persona personaActualizada = new Persona { Id = id, Name = newName };
+
+                // El método Update de SQLite buscará el registro por el Id y reemplazará los demás campos
+                result = _conn.Update(personaActualizada);
+
+                Message = "Dato actualizado exitosamente";
+            }
+            catch (Exception ex)
+            {
+                Message = string.Format("Error al actualizar: " + ex.Message);
+            }
+        }
     }
 
 }
